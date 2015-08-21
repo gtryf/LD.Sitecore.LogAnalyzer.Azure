@@ -3,6 +3,7 @@ using Sitecore.LogAnalyzer.Parsing;
 using Sitecore.LogAnalyzer;
 using System;
 using System.Globalization;
+using Sitecore.LogAnalyzer.Extenstions;
 
 namespace LD.Sitecore.LogAnalyzer.Modules.Azure.Parsing
 {
@@ -29,7 +30,7 @@ namespace LD.Sitecore.LogAnalyzer.Modules.Azure.Parsing
             DateTime result;
             if (index + 18 >= line.Length) return null;
             var candidate = line.Substring(index, 19);
-            if (!DateTime.TryParseExact(candidate, "dd-MM-yyyy HH:mm:ss", CultureInfo.InvariantCulture, DateTimeStyles.None, out result))
+            if (!DateTime.TryParseExact(candidate, "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture, DateTimeStyles.None, out result))
                 return null;
             
             index = ParserHelper.GoToNextWord(line, index + 19);
