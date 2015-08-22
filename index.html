@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="UTF-8">
+    <title>Faster Sitecore Log Analyzer Azure Plugin by gtryf</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
+  </head>
+  <body>
+    <section class="page-header">
+      <h1 class="project-name">Faster Sitecore Log Analyzer Azure Plugin</h1>
+      <h2 class="project-tagline">A better version of the Azure plugn for Sitecore Log Analyzer.</h2>
+      <a href="https://github.com/gtryf/LD.Sitecore.LogAnalyzer.Azure" class="btn">View on GitHub</a>
+      <a href="https://github.com/gtryf/LD.Sitecore.LogAnalyzer.Azure/zipball/master" class="btn">Download .zip</a>
+      <a href="https://github.com/gtryf/LD.Sitecore.LogAnalyzer.Azure/tarball/master" class="btn">Download .tar.gz</a>
+    </section>
+
+    <section class="main-content">
+      <h1>
+<a id="ldsitecoreloganalyzerazure" class="anchor" href="#ldsitecoreloganalyzerazure" aria-hidden="true"><span class="octicon octicon-link"></span></a>LD.Sitecore.LogAnalyzer.Azure</h1>
+
+<p>A better version of the Azure plugin for Sitecore Log Analyzer.</p>
+
+<p>This module is meant to replace the default Azure plugin that comes with 
+<a href="https://marketplace.sitecore.net/Modules/S/Sitecore_Log_Analyzer.aspx">Sitecore Log Analyzer</a>. </p>
+
+<h2>
+<a id="background" class="anchor" href="#background" aria-hidden="true"><span class="octicon octicon-link"></span></a>Background</h2>
+
+<p>The problem with the original plugin is that the date/time filter is performed on the <code>Timestamp</code> column for 
+the <code>WADLogsTable</code> table on your Azure table storage. This is a no-no, as this column is not indexed, so in effect the query amounts to a simple table scan. For chatty logs, this may take hours to process, or even fail altogether.</p>
+
+<p>This plugin performs the query the right way, i.e. it queries on the <code>PartitionKey</code> column which <em>is</em> indexed,
+which leads to an efficiency gain of many orders of magnitude. For all intents and purposes, the plugin behaves in exactly the same way as the default plugin that's shipped with SCLA.</p>
+
+<h2>
+<a id="installation-and-use" class="anchor" href="#installation-and-use" aria-hidden="true"><span class="octicon octicon-link"></span></a>Installation and Use</h2>
+
+<p>Clone the repository and build the <code>LD.SitecoreLogAnalyzer.Modules.Azure.Present</code> project. In order to build successfully, you have to copy into the <code>/Libraries</code> directory the following files from SCLA's bin directory:</p>
+
+<ul>
+<li>Microsoft.WindowsAzure.Storage.dll</li>
+<li>Ninject.dll</li>
+<li>SitecoreLogAnalyzer.Common.dll</li>
+<li>SitecoreLogAnalyzer.Kernel.dll</li>
+<li>SitecoreLogAnalyzer.exe</li>
+</ul>
+
+<p>After building, copy <code>LD.SitecoreLogAnalyzer.Modules.Azure.Present.dll</code> and <code>LD.SitecoreLogAnalyzer.Modules.Azure.dll</code> from your output directory to SCLA's bin directory. Then, edit SitecoreLogAnalyzer.config, and add the following in the <code>configuration/modules</code> section:</p>
+
+<div class="highlight highlight-xml"><pre>&lt;<span class="pl-ent">add</span> <span class="pl-e">name</span>=<span class="pl-s"><span class="pl-pds">"</span>Azure Storage Table (LD)<span class="pl-pds">"</span></span> <span class="pl-e">assembly</span>=<span class="pl-s"><span class="pl-pds">"</span>LD.SitecoreLogAnalyzer.Modules.Azure<span class="pl-pds">"</span></span>&gt;
+  &lt;<span class="pl-ent">invoker</span> <span class="pl-e">type</span>=<span class="pl-s"><span class="pl-pds">"</span>LD.Sitecore.LogAnalyzer.Modules.Azure.Presentation.AzureSourceInvoker, LD.SitecoreLogAnalyzer.Modules.Azure.Present<span class="pl-pds">"</span></span> <span class="pl-e">image</span>=<span class="pl-s"><span class="pl-pds">"</span>..\Resources\Azure.png<span class="pl-pds">"</span></span>&gt;&lt;/<span class="pl-ent">invoker</span>&gt;
+&lt;/<span class="pl-ent">add</span>&gt;</pre></div>
+
+<p>You can use the <code>SitecoreLogAnalyzer.Azure.config</code> configuration file to store your Azure storage account's credentials. This file is also used by SCLA's default Azure plugin, so if you choose to use the two plugins side-by-side, you may store your credentials in a new file called <code>SitecoreLogAnalyzer.Azure.config</code>. This plugin will give preference to that file if it can find it.</p>
+
+      <footer class="site-footer">
+        <span class="site-footer-owner"><a href="https://github.com/gtryf/LD.Sitecore.LogAnalyzer.Azure">Faster Sitecore Log Analyzer Azure Plugin</a> is maintained by <a href="https://github.com/gtryf">gtryf</a>.</span>
+
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
+      </footer>
+
+    </section>
+
+            <script type="text/javascript">
+            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+          </script>
+          <script type="text/javascript">
+            try {
+              var pageTracker = _gat._getTracker("UA-66630127-2");
+            pageTracker._trackPageview();
+            } catch(err) {}
+          </script>
+
+  </body>
+</html>
